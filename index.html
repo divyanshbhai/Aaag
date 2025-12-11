@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Old Man Fire Shock</title>
+<style>
+  body {
+    {% comment %} margin: 0;
+    font-family: Comic Sans MS, cursive;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  } {% endcomment %}
+  #gameContainer {
+    {% comment %} position: relative; {% endcomment %}
+    {% comment %} width: 360px; /* mobile portrait width */
+    height: 640px; /* mobile portrait height */
+    border: 2px solid #333;
+    background-color: #fff; {% endcomment %}
+  }
+  #oldManImage {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+  }
+  #igniteBtn {
+    position: absolute;
+    padding: 10px 20px;
+    font-size: 18px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    display: none; /* initially hidden */
+  }
+</style>
+</head>
+<body>
+<div id="gameContainer">
+  <img id="oldManImage" src="sleeping.png" alt="Old Man Sleeping">
+  <button id="igniteBtn">Ignite 🔥</button>
+</div>
+
+<audio id="fireSound" src="fire.mp3"></audio>
+
+<script>
+const oldManImage = document.getElementById('oldManImage');
+const igniteBtn = document.getElementById('igniteBtn');
+const fireSound = document.getElementById('fireSound');
+const gameContainer = document.getElementById('gameContainer');
+
+// Change images URLs
+const sleepingImage = 'sleeping.png'; // old man sleeping
+const shockedImage = 'fire.png'; // old man shocked by fire
+
+// Function to show ignite button at random position
+function showIgniteBtn() {
+  const btnWidth = 120;
+  const btnHeight = 50;
+
+  // Random position inside game container
+  const x = Math.random() * (gameContainer.clientWidth - btnWidth);
+  const y = Math.random() * (gameContainer.clientHeight - btnHeight);
+
+  igniteBtn.style.left = x + 'px';
+  igniteBtn.style.top = y + 'px';
+  igniteBtn.style.display = 'block';
+}
+
+// When user clicks ignite
+igniteBtn.addEventListener('click', () => {
+  // Change image to shocked
+  oldManImage.src = shockedImage;
+
+  // Play funny fire sound
+  fireSound.play();
+
+  // Hide button
+  igniteBtn.style.display = 'none';
+
+  // After 1.5 seconds, return to sleeping image
+  setTimeout(() => {
+    oldManImage.src = sleepingImage;
+
+    // Show ignite button again randomly after short delay
+    setTimeout(showIgniteBtn, Math.random() * 2000 + 1000);
+  }, 1500);
+});
+
+// Initially show ignite button after 1 second
+setTimeout(showIgniteBtn, 1000);
+</script>
+</body>
+</html>
